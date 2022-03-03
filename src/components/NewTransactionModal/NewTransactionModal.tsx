@@ -9,6 +9,7 @@ import {
 import closeSVG from '../../assets/close.svg';
 import incomeSVG from '../../assets/income.svg';
 import outcomeSVG from '../../assets/outcome.svg';
+import { api } from '../../services/api';
 
 interface NewTransactionModalProps {
 	isOpen: boolean;
@@ -28,6 +29,13 @@ const NewTransactionModal = ({
 
 	function handleCreateNewTransaction(event: FormEvent) {
 		event.preventDefault();
+		const data = {
+			title,
+			amount: value,
+			category,
+			type,
+		};
+		api.post('/transactions', data);
 	}
 
 	return (
