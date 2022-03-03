@@ -9,7 +9,7 @@ import {
 import closeSVG from '../../assets/close.svg';
 import incomeSVG from '../../assets/income.svg';
 import outcomeSVG from '../../assets/outcome.svg';
-import { api } from '../../services/api';
+import { useTransaction } from '../../hooks/useTransactions';
 
 interface NewTransactionModalProps {
 	isOpen: boolean;
@@ -27,6 +27,8 @@ const NewTransactionModal = ({
 	const [category, setCategory] = useState('');
 	const [value, setValue] = useState(0);
 
+	const { createTransaction } = useTransaction();
+
 	function handleCreateNewTransaction(event: FormEvent) {
 		event.preventDefault();
 		const data = {
@@ -35,7 +37,16 @@ const NewTransactionModal = ({
 			category,
 			type,
 		};
-		api.post('/transactions', data);
+		try {
+			createTransaction(data);
+			setTitle('');
+			setType('');
+			setCategory('');
+			setValue(0);
+			onRequestClose();
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	return (

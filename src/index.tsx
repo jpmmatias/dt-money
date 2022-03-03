@@ -23,8 +23,8 @@ createServer({
 					id: 2,
 					title: 'Freelancer de design',
 					category: 'Dev',
-					amount: 1433,
-					type: 'deposit',
+					amount: 1000,
+					type: 'withdraw',
 					createdAt: new Date('2021-16-12 11:00:00'),
 				},
 			],
@@ -38,7 +38,7 @@ createServer({
 
 		this.post('/transactions', (schema, request) => {
 			const data = JSON.parse(request.requestBody);
-			return schema.create('transaction', data);
+			return schema.create('transaction', { ...data, createdAt: new Date() });
 		});
 	},
 });
